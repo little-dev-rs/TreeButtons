@@ -10,14 +10,15 @@ import UIKit
 class RoundedButton: UIButton {
     
     private enum Constants {
-        static let contentColor: UIColor = .magenta
+        static let normalColor: UIColor = .magenta
+        static let dimmedColor: UIColor = .lightGray
         static let cornerRadius: CGFloat = 10
         static let horizontalInset: CGFloat = 14
         static let verticalInset: CGFloat = 10
         static let imageInset: CGFloat = 8
         static let animationDuration: TimeInterval = 2
     }
-
+    
     private var originalSize: CGSize?
     private var isShrinking: Bool = false
     
@@ -32,17 +33,34 @@ class RoundedButton: UIButton {
     
     override var intrinsicContentSize: CGSize {
         let labelSize = titleLabel?.sizeThatFits(CGSize(width: frame.width, height: .greatestFiniteMagnitude)) ?? CGSize.zero
-        let desiredButtonSize = CGSize(width: labelSize.width + Constants.horizontalInset + Constants.horizontalInset + Constants.imageInset + (imageView?.image?.size.width ?? 0),
-                                       height: max(labelSize.height, (imageView?.image?.size.height ?? 0)) + Constants.verticalInset + Constants.verticalInset)
+        let desiredWidth = labelSize.width + Constants.horizontalInset + Constants.horizontalInset + Constants.imageInset + (imageView?.image?.size.width ?? 0)
+        let desiredHeight = max(labelSize.height, (imageView?.image?.size.height ?? 0)) + Constants.verticalInset + Constants.verticalInset
+        let desiredButtonSize = CGSize(width: desiredWidth, height: desiredHeight)
         return desiredButtonSize
     }
-    
+
+    override func tintColorDidChange() {
+         super.tintColorDidChange()
+        
+        switch tintAdjustmentMode {
+        case .normal :
+            self.backgroundColor = Constants.normalColor
+        case .automatic:
+            // no chances
+            break
+        case .dimmed:
+            self.backgroundColor = Constants.dimmedColor
+        @unknown default:
+            break
+        }
+    }
+
     init(title: String, image: UIImage) {
         super.init(frame: .zero)
-    
+
         initialSetup(title: title, image: image)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -50,24 +68,21 @@ class RoundedButton: UIButton {
     func initialSetup(title: String, image: UIImage) {
         setTitle(title, for: .normal)
         setImage(image, for: .normal)
-        backgroundColor = Constants.contentColor
+        backgroundColor =  Constants.normalColor
+        tintAdjustmentMode = .automatic
         
         setCorners()
-        setContentInsets()
     }
     
     func setCorners() {
         layer.cornerRadius = Constants.cornerRadius
         layer.masksToBounds = true
     }
-    
-    func setContentInsets() {
-
-    }
 
 }
 
 //MARK: - Touches
+
 extension RoundedButton {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
