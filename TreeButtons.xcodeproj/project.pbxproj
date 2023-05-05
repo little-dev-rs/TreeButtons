@@ -13,6 +13,8 @@
 		702C19BA2A03C8B900435C4A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 702C19B82A03C8B900435C4A /* Main.storyboard */; };
 		702C19BC2A03C8BA00435C4A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 702C19BB2A03C8BA00435C4A /* Assets.xcassets */; };
 		702C19BF2A03C8BA00435C4A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 702C19BD2A03C8BA00435C4A /* LaunchScreen.storyboard */; };
+		707FB3752A05B632009D1DC9 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707FB3742A05B632009D1DC9 /* RoundedButton.swift */; };
+		707FB3772A05BA78009D1DC9 /* ModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707FB3762A05BA78009D1DC9 /* ModalViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		702C19BB2A03C8BA00435C4A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		702C19BE2A03C8BA00435C4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		702C19C02A03C8BA00435C4A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		707FB3742A05B632009D1DC9 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
+		707FB3762A05BA78009D1DC9 /* ModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +63,8 @@
 				702C19B22A03C8B900435C4A /* AppDelegate.swift */,
 				702C19B42A03C8B900435C4A /* SceneDelegate.swift */,
 				702C19B62A03C8B900435C4A /* ViewController.swift */,
+				707FB3762A05BA78009D1DC9 /* ModalViewController.swift */,
+				707FB3742A05B632009D1DC9 /* RoundedButton.swift */,
 				702C19B82A03C8B900435C4A /* Main.storyboard */,
 				702C19BB2A03C8BA00435C4A /* Assets.xcassets */,
 				702C19BD2A03C8BA00435C4A /* LaunchScreen.storyboard */,
@@ -139,8 +145,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				702C19B72A03C8B900435C4A /* ViewController.swift in Sources */,
+				707FB3772A05BA78009D1DC9 /* ModalViewController.swift in Sources */,
 				702C19B32A03C8B900435C4A /* AppDelegate.swift in Sources */,
 				702C19B52A03C8B900435C4A /* SceneDelegate.swift in Sources */,
+				707FB3752A05B632009D1DC9 /* RoundedButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

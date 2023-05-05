@@ -13,8 +13,7 @@ class ViewController: UIViewController {
         static let firstButtonText: String = "First Button"
         static let secondButtonText: String = "Second Medium Button"
         static let thirdButtonText: String = "Third"
-        static let buttonImage: UIImage = UIImage(systemName: "arrowshape.turn.up.right.circle.fill") ?? UIImage().withTintColor(.white, renderingMode: .alwaysOriginal)
-        //corner
+        static let buttonImage: UIImage = UIImage(systemName: "arrowshape.turn.up.right.circle.fill") ?? UIImage()
     }
     
     lazy var firstButton: RoundedButton = {
@@ -29,6 +28,7 @@ class ViewController: UIViewController {
     
     lazy var thirdButton: RoundedButton = {
         let button = RoundedButton(title: Constants.thirdButtonText, image: Constants.buttonImage)
+        button.addTarget(self, action: #selector(thirdButtonPressed), for: .touchUpInside)
         return button
     }()
 
@@ -39,6 +39,7 @@ class ViewController: UIViewController {
 //        setupUI()
         setupPositions()
     }
+
     func setupSubviews() {
         view.addSubview(firstButton)
         view.addSubview(secondButton)
@@ -58,6 +59,19 @@ class ViewController: UIViewController {
             thirdButton.centerYAnchor.constraint(equalTo: secondButton.bottomAnchor, constant: 40)
         ])
     }
+    
+    
+    @objc
+    private func thirdButtonPressed() {
+        openModalController()
+    }
+    
+    private func openModalController() {
+        let vc = ModalViewController()
+        present(vc, animated: true) {
+            print("Test1 closed???")
+        }
+    }
 
 
 //    private func setupUI() {
@@ -66,48 +80,3 @@ class ViewController: UIViewController {
 
 }
 
-
-class RoundedButton: UIButton {
-    
-    override var intrinsicContentSize: CGSize {
-        let labelSize = titleLabel?.sizeThatFits(CGSize(width: frame.width, height: .greatestFiniteMagnitude)) ?? CGSize.zero
-        let desiredButtonSize = CGSize(width: labelSize.width + contentEdgeInsets.left + contentEdgeInsets.right,
-                                       height: labelSize.height + contentEdgeInsets.top + contentEdgeInsets.bottom)
-        return desiredButtonSize
-    }
-    
-    init(title: String, image: UIImage) {
-        super.init(frame: .zero)
-        setTitle(title, for: .normal)
-        setImage(image, for: .normal)
-        initialSetup()
-        backgroundColor = .magenta
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    
-    func initialSetup() {
-        setCorners()
-        setContentInsets()
-    }
-    
-    func setCorners() {
-        layer.cornerRadius = 10
-        layer.masksToBounds = true
-    }
-    
-    func setContentInsets() {
-        contentEdgeInsets = UIEdgeInsets(top: 10, left: 14, bottom: 10, right: 14)
-        if let titleLabel = titleLabel {
-            imageEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: -titleLabel.frame.width - 8)
-        }
-        if let imageView = imageView {
-            titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageView.frame.width, bottom: 0, right: imageView.frame.width)
-        }
-        sizeToFit()
-    }
-
-}
