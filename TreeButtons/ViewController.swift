@@ -2,8 +2,6 @@
 //  ViewController.swift
 //  TreeButtons
 //
-//  Created by Svetlana Shardakova on 04.05.2023.
-//
 
 import UIKit
 
@@ -33,7 +31,13 @@ class ViewController: UIViewController {
         setupPositions()
     }
 
-    func setupSubviews() {
+}
+
+//MARK: - Appearance
+
+private extension ViewController {
+    
+    private func setupSubviews() {
         view.addSubview(firstButton)
         view.addSubview(secondButton)
         view.addSubview(thirdButton)
@@ -52,13 +56,12 @@ class ViewController: UIViewController {
             thirdButton.centerYAnchor.constraint(equalTo: secondButton.bottomAnchor, constant: Constants.verticalOffset)
         ])
     }
-
 }
 
 //MARK: - Actions
 
-extension ViewController {
-
+private extension ViewController {
+    
     @objc
     private func thirdButtonPressed() {
         openModalController()

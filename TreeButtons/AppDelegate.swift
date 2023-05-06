@@ -2,8 +2,6 @@
 //  AppDelegate.swift
 //  TreeButtons
 //
-//  Created by Svetlana Shardakova on 04.05.2023.
-//
 
 import UIKit
 

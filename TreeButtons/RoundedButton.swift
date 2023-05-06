@@ -2,8 +2,6 @@
 //  RoundedButton.swift
 //  TreeButtons
 //
-//  Created by Svetlana Shardakova on 06.05.2023.
-//
 
 import UIKit
 
@@ -17,16 +15,16 @@ class RoundedButton: UIButton {
         static let verticalInset: CGFloat = 10
         static let imageInset: CGFloat = 8
         static let animationDuration: TimeInterval = 2
+        static let animationScale: CGFloat = 0.5
     }
-    
-    private var originalSize: CGSize?
-    private var isShrinking: Bool = false
+
+    private var longPressGestureRecognizer: UILongPressGestureRecognizer?
     
     override func layoutSubviews() {
         contentEdgeInsets = UIEdgeInsets(top: Constants.verticalInset, left: Constants.horizontalInset, bottom: Constants.verticalInset, right: Constants.horizontalInset)
         if let titleLabel = titleLabel, let imageView = imageView {
-            imageEdgeInsets = UIEdgeInsets(top: 0, left: titleLabel.frame.size.width + 8, bottom: 0, right: -titleLabel.frame.size.width)
-            titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageView.frame.size.width, bottom: 0, right: imageView.frame.size.width + 8)
+            imageEdgeInsets = UIEdgeInsets(top: 0, left: titleLabel.frame.size.width + Constants.imageInset, bottom: 0, right: -titleLabel.frame.size.width)
+            titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageView.frame.size.width, bottom: 0, right: imageView.frame.size.width + Constants.imageInset)
         }
         super.layoutSubviews()
     }
@@ -46,7 +44,6 @@ class RoundedButton: UIButton {
         case .normal :
             self.backgroundColor = Constants.normalColor
         case .automatic:
-            // no chances
             break
         case .dimmed:
             self.backgroundColor = Constants.dimmedColor
@@ -59,12 +56,20 @@ class RoundedButton: UIButton {
         super.init(frame: .zero)
 
         initialSetup(title: title, image: image)
+        setupLongPressGestureRecognizer()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
+}
+
+
+//MARK: - Appearance
+
+private extension RoundedButton {
+
     func initialSetup(title: String, image: UIImage) {
         setTitle(title, for: .normal)
         setImage(image, for: .normal)
@@ -78,60 +83,39 @@ class RoundedButton: UIButton {
         layer.cornerRadius = Constants.cornerRadius
         layer.masksToBounds = true
     }
-
 }
 
 //MARK: - Touches
 
-extension RoundedButton {
+private extension RoundedButton {
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        
-        guard let touch = touches.first else { return }
-        guard !isShrinking else { return }
-        originalSize = self.bounds.size
-        UIView.animate(withDuration: Constants.animationDuration, animations: { [weak self] in
-            guard let self = self else { return }
-            self.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
-        })
-        
-        isShrinking = true
+    func setupLongPressGestureRecognizer() {
+        self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        self.addGestureRecognizer(self.longPressGestureRecognizer!)
     }
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesEnded(touches, with: event)
-        
-        guard let originalSize = originalSize else { return }
-        
-        if isShrinking {
-            // Animate the button to return to original size
-            UIView.animate(withDuration: Constants.animationDuration, animations: { [weak self] in
-                guard let self = self else { return }
-                self.transform = .identity
-            })
-        } else {
-            // Perform the button's action
-            self.sendActions(for: .touchUpInside)
-        }
-        
-        self.originalSize = nil
-        isShrinking = false
+    @objc
+    func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
+         switch gestureRecognizer.state {
+         case .began:
+             self.startAnimation()
+         case .ended, .cancelled:
+             self.stopAnimation()
+         default:
+             break
+         }
+     }
+
+    func startAnimation() {
+        UIView.animate(withDuration: Constants.animationDuration, delay: 0, options: [.curveEaseOut, .allowUserInteraction, .beginFromCurrentState], animations: {
+            self.transform = CGAffineTransform(scaleX: Constants.animationScale, y: Constants.animationScale)
+        } )
     }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesCancelled(touches, with: event)
-        
-        guard let originalSize = originalSize else { return }
-        guard isShrinking else { return }
-        
-        // Animate the button to return to original size
-        UIView.animate(withDuration: 0.2, animations: { [weak self] in
-            guard let self = self else { return }
+
+    func stopAnimation() {
+        UIView.animate(withDuration: Constants.animationDuration, delay: 0, options: [.curveEaseOut, .allowUserInteraction], animations: {
             self.transform = .identity
         })
-        
-        self.originalSize = nil
-        isShrinking = false
     }
+    
 }
